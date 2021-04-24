@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
-/* 필요한 헤더파일 추가 if necessary */
+
 
 
 typedef struct Node {
@@ -15,15 +15,8 @@ typedef struct Head {
 	struct Node* first;
 }headNode;
 
-/* 함수 리스트 */
-
-/* note: initialize는 이중포인터를 매개변수로 받음
-         singly-linked-list의 initialize와 차이점을 이해 할것 */
 int initialize(headNode** h);
 
-/* note: freeList는 싱글포인터를 매개변수로 받음
-        - initialize와 왜 다른지 이해 할것
-        - 이중포인터를 매개변수로 받아도 해제할 수 있을 것 */
 int freeList(headNode* h);
 
 int insertNode(headNode* h, int key);
@@ -46,7 +39,7 @@ int main()
 	char command;
 	int key;
 	headNode* headnode=NULL;
-    printf("2018038016 �̻�ȣ");
+    printf("2018038016 이상호");
     
 	do{
 		printf("----------------------------------------------------------------\n");
@@ -113,11 +106,34 @@ int main()
 
 
 int initialize(headNode** h) {
-    
+	
+    if(*h != NULL) // head를 가리키는 주소가 있으면  
+	      freeList(*h); // 할당된 메모리 모두 해제 
+	
+	*h = (headNode*)malloc(sizeof(headNode));	// 헤드노드 동적할당	 
+	(**h).first=NULL; //headnode 초기화 
+			  
 	return 1;
 }
 
-int freeList(headNode* h){
+int freeList(headNode* h){ // listnode 메모리 해제 함수 (headnode도 해제) 
+	
+	listNode *now = h -> first; //헤드 노드가 가리키는 곳을 now가 가리키게 
+	
+	if(!now) //리스트에 노드가 한개도 없을때 
+	{
+		free(now); //헤드 노드만 동적할당 반납 
+		return 0; 
+	}
+	
+	while(now->rlink != NULL){
+		    now = now->rlink; // p가 다음노드를 가리키게
+			free(now->llink); // 이전 노드들 해제 
+	}
+	
+	free(now);
+	free(h); //  headnode 해제 
+	 
 	return 0;
 }
 
@@ -146,20 +162,32 @@ void printList(headNode* h) {
 
 
 
-
-/**
- * list에 key에 대한 노드하나를 추가
- */
 int insertLast(headNode* h, int key) {
+	
+    listNode* node = (listNode*)malloc(sizeof(listNode)); //새로 삽입할 노드를 동적할당한다
+	node->llink = NULL; //새로 생성한 노드에 널 포인터로 초기화하고 키 값을 넣는다.
+	node->rlink = NULL;
+	node->key = key;
+	listNode* p = h->first; //움직일 포인터를 초기화 
+	
+	if(p == NULL) // 해드 포인터가 가리키는 리스트가 없다면 , 즉 노드가 없다면
+	{
+		h->first = node; //새로 삽입할 노드를 가장 첫 노드로 셋팅
+	}
+	else //노드가 하나이상 있을 경우
+	{
+		while(p->rlink != NULL) //마지막 노드에 도달할 때까지
+		{
+			p = p->rlink; //포인터를 이동시켜준다
+		}
+		p->rlink = node; //마지막 노드에 도달 시, 새로 삽입할 노드와 연결해준다.
+		node->llink = p;
+	}
 
 	return 0;
 }
 
 
-
-/**
- * list의 마지막 노드 삭제
- */
 int deleteLast(headNode* h) {
 
 
@@ -168,16 +196,11 @@ int deleteLast(headNode* h) {
 
 
 
-/**
- * list 처음에 key에 대한 노드하나를 추가
- */
 int insertFirst(headNode* h, int key) {
 	return 0;
 }
 
-/**
- * list의 첫번째 노드 삭제
- */
+
 int deleteFirst(headNode* h) {
 
 	return 0;
@@ -185,22 +208,16 @@ int deleteFirst(headNode* h) {
 
 
 
-/**
- * 리스트의 링크를 역순으로 재 배치
- */
 int invertList(headNode* h) {
 
 	return 0;
-/* 리스트를 검색하여, 입력받은 key보다 큰값이 나오는 노드 바로 앞에 삽입 */
+
 int insertNode(headNode* h, int key) {
 
 	return 0;
 }
 
 
-/**
- * list에서 key에 대한 노드 삭제
- */
 int deleteNode(headNode* h, int key) {
 
 	return 1;
