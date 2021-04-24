@@ -196,8 +196,32 @@ int deleteLast(headNode* h) {
 
 
 
-int insertFirst(headNode* h, int key) {
+int insertFirst(headNode* h, int key) { //list처음에 key에 대한 노드를 추가 
+	
+	listNode* node = (listNode*)malloc(sizeof(listNode)); //새로 삽입할 노드를 동적할당
+	listNode* p = h->first;
+	
+	if(p == NULL) //리스트가 비어있을 때
+	{
+		h->first = node; //노드의 시작을 새로삽입한 노드로 변경
+		node->llink = node->rlink = NULL;
+	}
+	
+	node->key=key;
+	
+	if(p == NULL) //리스트가 비어있을 때
+	{
+		h->first = node; //노드의 시작을 새로삽입한 노드로 변경
+	}
+	else //노드가 하나이상 있을 때
+	{
+		h->first = node; //양방향으로 노드를 링크해준다.
+		node->rlink = p;
+		p->llink = node;
+	}
+
 	return 0;
+	
 }
 
 
