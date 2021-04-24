@@ -188,10 +188,42 @@ int insertLast(headNode* h, int key) {
 }
 
 
-int deleteLast(headNode* h) {
+int deleteLast(headNode* h) { // 제일 마지막의 노드를 삭제한다 
+	
+    listNode* now = h->first;	// 접근할 노드 생성	
+    int cnt=0;
+									
+	if (h == NULL) {					// head 즉, 초기화된 리스트 존재하지 않으면 
+		printf(">>> 리스트가 초기화 되지 않았습니다. <<<\n");
+		return -1;		//비정상 종료 
+	}
+	
+	if (h->first == NULL) {				//초기화된 리스트에 노드가 존재하지 않으면 
+		printf(">>> 리스트에 노드가 어느 노드도 없습니다. <<<\n");
+		return -1;		//비정상 종료 
+	}
+	
+	else //노드가 하나이상 있을 때
+	{
+		while(now->rlink != NULL) //가장 마지막 노드에 도달할때까지
+		{
+			cnt++;
+			now = now->rlink;
+		}
 
+		if(cnt != 0) //노드가 2개이상 있을 때
+		{
+			(now->llink)->rlink=NULL;
+		}
+		else //노드가 1개일 때
+		{
+			h->first = NULL;
+		}
+	}
+	free(now); //동적할당 해제
 
-	return 0;
+	return 0;		//정상 종료 표현 
+
 }
 
 
