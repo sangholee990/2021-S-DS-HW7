@@ -233,8 +233,31 @@ int deleteFirst(headNode* h) {
 
 
 int invertList(headNode* h) {
-
+	
+    listNode* now=NULL;
+    listNode* tail;
+	listNode* mid=NULL;
+	
+	if(h->first == NULL) //리스트에 노드가 하나도 없을 때
+	{
+		printf("리스트에 노드가 없습니다.\n");
+		return 0;
+	} 
+	
+	now= h->first;
+	
+	for(;now!=NULL;){  // 리스트를 벗어날때 까지 
+		tail = mid;						//연결될 노드의 위치 저장
+		mid = now;						//연결해야하는 노드의 위치 저장
+		now = now->rlink;				//링크 변경 전 다음 노드의 위치 저장
+		mid->rlink = tail;				//기존의 오른쪽 링크를 왼쪽 링크가 가리키는 쪽으로 연결
+		mid->llink = now;				//기존의 왼쪽 링크를 오른쪽 링크가 가리키는 쪽으로 연결
+	}
+	
+	h->first=mid; //헤드 포인터가 역순이된 리스트의 제일  첫번째 노드를 가리키게 
+    
 	return 0;
+}
 
 int insertNode(headNode* h, int key) {
 
