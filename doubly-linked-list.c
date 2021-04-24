@@ -46,7 +46,8 @@ int main()
 	char command;
 	int key;
 	headNode* headnode=NULL;
-
+    printf("2018038016 ¿ÃªÛ»£");
+    
 	do{
 		printf("----------------------------------------------------------------\n");
 		printf("                     Doubly Linked  List                        \n");
